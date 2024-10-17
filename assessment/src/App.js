@@ -1,12 +1,14 @@
 import './App.css';
 import { Provider } from 'react-redux';
 import store from './redux/configureStore';
-import CategoryComponent from './components/CategoryComponent';
+import CategoryList from './components/CategoryList';
+import JokesList from './components/JokesList';
 function App() {
   return (
     <div className="App">
       <Provider store={store}>
-        <CategoryComponent />
+        <CategoryList />
+        <JokesList />
       </Provider>
     </div>
   );
