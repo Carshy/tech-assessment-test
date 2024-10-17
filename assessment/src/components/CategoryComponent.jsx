@@ -4,7 +4,7 @@ import { fetchCategories } from '../redux/slices/categorySlice';
 
 const CategoryComponent = () => {
   const dispatch = useDispatch();
-  const categories = useSelector((state) => state.categories.categories);
+  const categories = useSelector((state) => state.categories);
 
   console.log('Show my Categories:', categories);
 

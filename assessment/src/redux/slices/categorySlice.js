@@ -21,13 +21,14 @@ const categorySlice = createSlice({
   'name': 'categories',
   initialState: {
     categories: [],
+    loading: false,
     error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
     .addCase(categorySlice.pending, (state) => {
-      state.pending = true
+      state.loading = true
     })
     .addCase(categorySlice.fulfilled, (state, action) => {
       state.categories = action.payload;
