@@ -5,7 +5,7 @@ export const fetchJokes = createAsyncThunk(
   'jokes/fetchJokes',
   async (category) => {
     const response = await axios.get(`https://api.chucknorris.io/jokes/search?query=${category}`);
-    return response.data.result;
+    return response.data;
   }
 );
 
