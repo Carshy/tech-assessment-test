@@ -1,29 +1,44 @@
 // src/components/Categories.js
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCategories } from '../redux/slices/categorySlice'; 
+import { fetchCategories } from '../redux/slices/categorySlice';
 
 const CategoryList = ({ onSelectCategory }) => {
   const dispatch = useDispatch();
-  const { categories, loading, error } = useSelector((state) => state.categories);
+  const { categories, status, error } = useSelector((state) => state.categories);
 
   useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
+    if (status === 'idle') {
+      dispatch(fetchCategories());
+    }
+  }, [status, dispatch]);
 
-  if (loading) return <p>Loading categories...</p>;
-  if (error) return <p>Error loading categories: {error}</p>;
+  const handleCategoryClick = (category) => {
+    onSelectCategory(category);
+  };
+
+  let content;
+
+  if (status === 'loading') {
+    content = <p>Loading categories...</p>;
+  } else if (status === 'succeeded') {
+    content = (
+      <ul>
+        {categories.map((category) => (
+          <li key={category}>
+            <button onClick={() => handleCategoryClick(category)}>{category}</button>
+          </li>
+        ))}
+      </ul>
+    );
+  } else if (status === 'failed') {
+    content = <p>Error: {error}</p>;
+  }
 
   return (
     <div>
       <h2>Categories</h2>
-      <div>
-        {categories.map((category) => (
-          <div key={category} onClick={() => onSelectCategory(category)}>
-            {category}
-          </div>
-        ))}
-      </div>
+      {content}
     </div>
   );
 };

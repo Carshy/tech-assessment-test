@@ -1,6 +1,8 @@
+// src/redux/categoriesSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+// Async thunk to fetch categories
 export const fetchCategories = createAsyncThunk(
   'categories/fetchCategories',
   async () => {
@@ -13,20 +15,21 @@ const categoriesSlice = createSlice({
   name: 'categories',
   initialState: {
     categories: [],
-    loading: false,
+    status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
     error: null,
   },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchCategories.pending, (state) => {
-        state.loading = true;
+        state.status = 'loading';
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.loading = false;
+        state.status = 'succeeded';
         state.categories = action.payload;
       })
       .addCase(fetchCategories.rejected, (state, action) => {
-        state.loading = false;
+        state.status = 'failed';
         state.error = action.error.message;
       });
   },

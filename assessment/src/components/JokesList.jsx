@@ -1,33 +1,47 @@
 // src/components/Jokes.js
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchJokes } from '../redux/slices/jokesSlice';
+import { fetchJokesByCategory } from '../redux/slices/jokesSlice';
 
 const JokesList = ({ selectedCategory }) => {
   const dispatch = useDispatch();
-  const { jokes, loading, error } = useSelector((state) => state.jokes);
+  const { jokes, status, error } = useSelector((state) => state.jokes);
 
-  // Fetch jokes when a category is selected
   useEffect(() => {
     if (selectedCategory) {
-      dispatch(fetchJokes(selectedCategory));
+      dispatch(fetchJokesByCategory(selectedCategory));
     }
   }, [selectedCategory, dispatch]);
 
-  if (!selectedCategory) return <p>Please select a category.</p>;
-  if (loading) return <p>Loading jokes for {selectedCategory}...</p>;
-  if (error) return <p>Error loading jokes: {error}</p>;
+  let content;
+
+  if (!selectedCategory) {
+    content = <p>Please select a category to view jokes.</p>;
+  } else if (status === 'loading') {
+    content = <p>Loading jokes for "{selectedCategory}"...</p>;
+  } else if (status === 'succeeded') {
+    if (jokes.length > 0) {
+      content = (
+        <ul>
+          {jokes.map((joke) => (
+            <li key={joke.id} style={{ marginBottom: '20px' }}>
+              <img src={joke.icon_url} alt="Chuck Norris Icon" style={{ width: '50px', height: '50px' }} />
+              <p>{joke.value}</p>
+            </li>
+          ))}
+        </ul>
+      );
+    } else {
+      content = <p>No jokes found for "{selectedCategory}".</p>;
+    }
+  } else if (status === 'failed') {
+    content = <p>Error: {error}</p>;
+  }
 
   return (
     <div>
-      <h2>Jokes for: {selectedCategory}</h2>
-      <ul>
-        {jokes.length > 0 ? (
-          jokes.map((joke) => <li key={joke.id}>{joke.value}</li>)
-        ) : (
-          <p>No jokes found for this category.</p>
-        )}
-      </ul>
+      <h2>Jokes in Category: {selectedCategory}</h2>
+      {content}
     </div>
   );
 };

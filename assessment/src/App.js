@@ -5,7 +5,7 @@ import store from './redux/configureStore';
 import CategoryList from './components/CategoryList';
 import JokesList from './components/JokesList';
 
-function App() {
+const App = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
 
   const handleSelectCategory = (category) => {
@@ -14,14 +14,13 @@ function App() {
 
   return (
     <Provider store={store}>
-      <h1>Chuck Norris Jokes</h1>
-      {/* Categories Component */}
-      <CategoryList onSelectCategory={handleSelectCategory} />
-
-      {/* Jokes Component */}
-      <JokesList selectedCategory={selectedCategory} />
+      <div className="App" style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+        <h1>Chuck Norris Jokes</h1>
+        <CategoryList onSelectCategory={handleSelectCategory} />
+        <JokesList selectedCategory={selectedCategory} />
+      </div>
     </Provider>
   );
-}
+};
 
 export default App;
