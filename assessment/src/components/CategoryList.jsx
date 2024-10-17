@@ -17,13 +17,13 @@ const CategoryList = ({ onSelectCategory }) => {
   return (
     <div>
       <h2>Categories</h2>
-      <ul>
+      <div>
         {categories.map((category) => (
-          <li key={category} onClick={() => onSelectCategory(category)}>
+          <div key={category} onClick={() => onSelectCategory(category)}>
             {category}
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
